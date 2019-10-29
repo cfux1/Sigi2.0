@@ -10,11 +10,11 @@ clear; format compact
 
 %% Creation of symbolic parameters
 
-syms m_w r_w theta_w dtheta_w ddtheta_w I_w % wheel
-syms m_p r_p theta_p dtheta_p ddtheta_p I_p % pendulum
-syms n I_m k_t k_b R A % motor/gear
-syms theta_w dtheta_w ddtheta_w theta_p dtheta_p ddtheta_p % radian
-syms f_w g % torque, gravity
+syms m_w r_w theta_w dtheta_w ddtheta_w I_w real% wheel
+syms m_p r_p theta_p dtheta_p ddtheta_p I_p real% pendulum
+syms n I_m k_t k_b R A real% motor/gear
+syms theta_w dtheta_w ddtheta_w theta_p dtheta_p ddtheta_p real % radian
+syms f_w g real % torque, gravity
 
 %% Generalized Coordinates
 
@@ -74,10 +74,8 @@ L = (K_w1 + K_w2 + K_p1 + K_p2) - (U_w + U_p);
 %% Differential of Lagrange
 
 % d/dt(dL/d(dq))) - (dL/dq) = f
+% Both of the two resulting equations are set to zero
 
-dLq = zeros(legth(q),1);
-ddLq = zeros(length(q),1);
-eq = zeros(length(q),1);
 
 N = length(q);
 for i = 1:N
@@ -93,3 +91,25 @@ for i = 1:N
 end
 
 eq = simplify(eq');
+
+%% Evaluation 
+
+% inserting the predefined parameters in script parameters
+
+params = parameter();
+
+% theta_w dtheta_w ddtheta_w theta_p dtheta_p ddtheta_p
+% params.theta_w params.dtheta_w params.ddtheta_w params.theta_p params.dtheta_p params.ddtheta_p
+
+old = [m_w r_w I_w m_p r_p theta_p dtheta_p...
+    ddtheta_p I_p n I_m k_t k_b R A...
+    f_w g];
+
+new = [params.m_w params.r_w...
+    params.I_w params.m_p params.r_p...
+    params.I_p params.n params.I_m...
+    params.k_t params.k_b params.R params.A...
+    params.f_w params.g];
+
+
+valued_eq = subs(eq, old, new);
