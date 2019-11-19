@@ -4,6 +4,8 @@
 \usepackage[ngerman]{babel}
 \usepackage[T1]{fontenc}
 \usepackage{hyperref}
+\usepackage{graphicx}
+\usepackage{float}
 
 \title{Inbetriebnahme Sigi2.0}
 \date{\today}
@@ -19,6 +21,14 @@ Um den Sigi 2.0 in Betrieb zu nehmen müssen drei Hauptschritte gemacht werden:
 \section*{Betriebssystem \& Simulink konfigurieren}
 \begin{enumerate}
 	\item Die \hyperref{https://ch.mathworks.com/matlabcentral/fileexchange/40313-simulink-support-package-for-raspberry-pi-hardware}{}{}{Simulink Support Package for Raspberry Pi Hardware} im Simulink installieren
+	
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=.80\linewidth]{Support}
+	\caption[Supportpackage]\label{Support Package}
+\end{figure}
+
+
 	\item Mittels dem Setup Assistenten im Add-On Manager die benötigte Software auf die SD-Karte, die man dann im Raspberry Pi verwenden will, schreiben
 \end{enumerate}
 
@@ -28,8 +38,27 @@ Dies geht am einfachsten mit der Arduino IDE. Diese ist \hyperref{https://www.ar
 	\item Die Datei \verb|Sigi2.ino| in einen gleichnamigen Ordner (\verb|Sigi2|) verschieben
 	\item \verb|Sigi2.ino| mit Arduino öffnen
 	\item In Arduino die Bibliotheksverwaltung (\textit{Sketch $\rightarrow$ Include Library $\rightarrow$ Manage Libraries}) öffnen, dort die Bibliotheken \verb|Balboa32U4| und \verb|PololuRPISlave| suchen und installieren
+	
+	\begin{figure}[H]
+		\centering
+		\includegraphics[width=.80\linewidth]{Bib}
+		\caption[Bibliotheken]\label{Bibliotheken}
+	\end{figure}
+
 	\item Das Pololu Balboa 32U4 über USB an den Computer anschliessen
+		\begin{figure}[H]
+		\centering
+		\includegraphics[width=.40\linewidth]{SigiNiklas}
+		\caption[Sigi]\label{Sigi anschliessen}
+		\end{figure}
 	\item Im Arduino unter \textit{Tools $\rightarrow$ Board:'...'} den Eintrag \verb|Board: "Arduino Leonardo"| auswählen
+	
+	\begin{figure}[H]
+		\centering
+		\includegraphics[width=.80\linewidth]{Leonardo}
+		\caption[Board]\label{Board auswählen}
+	\end{figure}
+
 	\item Unter \textit{Tools $\rightarrow$ Port} den Balboa auswählen
 	\item In der Hauptleiste von Arduino auf \textit{Upload} (Pfeil nach Rechts) anklicken
 \end{enumerate}
