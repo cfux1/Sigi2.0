@@ -1,0 +1,23 @@
+\documentclass[a4paper]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[ngerman]{babel}
+\usepackage[T1]{fontenc}
+\usepackage{hyperref}
+\usepackage{tikz, pgf}
+\usepackage{rotating}
+\usepackage[left=2cm,right=2cm,top=2cm,bottom=2cm]{geometry}
+
+\title{Signale Sigi2.0}
+\date{\today}
+\begin{document}
+\maketitle
+
+Die Komponenten des Sigi2.0 tauschen untereinander die Signale aus, wie sie in der Graphik auf der nächsten Seite abgebildet sind. Dabei ist zu beachten, dass der Motor ein Drehmoment zurück gibt und die Sensoren geben die Werte der jeweilig gemessenen Grösse zurück. Diese sind einfach Zahlenwerte, die dann mit der entsprechenden Sensitivität multipliziert den Wert in der entsprechenden physikalischen Grösse zurückgeben. Dabei hängt die Sensitivität von der gewählten Full-Scale ab.
+\begin{sidewaysfigure}
+	\resizebox{\textwidth}{!}{
+		\input{SignalDiagram.tex}
+	}
+\end{sidewaysfigure}
+	
+\end{document}
