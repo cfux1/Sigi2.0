@@ -16,7 +16,8 @@
 
 Die Komponenten des Sigi2.0 tauschen untereinander die Signale aus, wie sie in der Graphik auf der nächsten Seite abgebildet sind. Dabei ist zu beachten, dass der Motor ein Drehmoment zurück gibt und die Sensoren geben die Werte der jeweilig gemessenen Grösse zurück. Diese sind einfach Zahlenwerte, die dann mit der entsprechenden Sensitivität multipliziert den Wert in der entsprechenden physikalischen Grösse zurückgeben. Dabei hängt die Sensitivität von der gewählten Full-Scale ab. In den folgenden Abschnitten wird noch genauer auf die einzelnen Hardware-Komponenten eingegangen. Für genauere Spezifikationen (nichtlinearität, Offset, Temperaturabhängigkeit etc.) wird auf das jeweilige Datenblatt verwiesen.
 
-\subsection*{Accelerometer}
+\subsection*{Inertialmodul}
+\subsubsection*{Accelerometer}
 In der folgenden Tabelle werden typische Werte\footnote{ohne Garantie vom Hersteller} für die Sensitivität des Accelerometers angegeben.
 Diese Werte gelten für eine Temperatur von $T = 25^\circ C$, die Temperaturabhängigkeit kann dem Datenblatt entnommen werden, und für eine Spannung von $1.8 V$
 \begin{center}
@@ -31,7 +32,7 @@ Diese Werte gelten für eine Temperatur von $T = 25^\circ C$, die Temperaturabh�
 Dies kann man auch wie folgt als Formel schreiben, wenn man als $FS$ jeweils die halbe Full-Scale ($FS = 2$ für eine Full-Scale von $\pm 2$) nimmt:\\
 \[Sens \left[\frac{mg}{LSB}\right] = \frac{FS}{2}*0.061\]
 
-\subsection*{Gyroskop}
+\subsubsection*{Gyroskop}
 In der folgenden Tabelle werden typische Werte\footnote{ohne Garantie vom Hersteller} für die Sensitivität des Gyroskops angegeben.
 Diese Werte gelten für eine Temperatur von $T = 25^\circ C$, die Temperaturabhängigkeit kann dem Datenblatt entnommen werden, und für eine Spannung von $1.8 V$
 \begin{center}
@@ -44,6 +45,8 @@ Diese Werte gelten für eine Temperatur von $T = 25^\circ C$, die Temperaturabh�
 	$\pm 2000$ & 70
 \end{tabular}
 \end{center}
+~\\
+Im Sensor LSM6DS33 ist auch ein Filter eingebaut, der sich je nach Konfiguration unterschiedlich verhält. Es hat jeweils nach beiden Sensoren zuerst einen Analogen Anti-aliasing LP-Filter, bevor das Signal Digitalisiert wird und danach noch mal zuerst einen LP-Filter und dann noch je nach Sensor eine kompliziertere Filterstruktur. Diese hängt von der Konfiguration ab und kann dem Datenblatt entnommen werden.
 
 \subsection*{Magnetometer}In der folgenden Tabelle werden typische Werte\footnote{ohne Garantie vom Hersteller} für die Sensitivität des Magnetometers angegeben.
 Diese Werte gelten für eine Temperatur von $T = 25^\circ C$, die Temperaturabhängigkeit kann dem Datenblatt entnommen werden, und für eine Spannung von $2.5 V$
@@ -56,7 +59,6 @@ Diese Werte gelten für eine Temperatur von $T = 25^\circ C$, die Temperaturabh�
 		$\pm 16$ & 1711
 	\end{tabular}
 \end{center}
-Im Sensor LSM6DS33 (Accelerometer/Gyroskop) ist auch ein Filter eingebaut, der sich je nach Konfiguration unterschiedlich verhält. Es hat jeweils nach beiden Sensoren zuerst einen Analogen Anti-aliasing LP-Filter, bevor das Signal Digitalisiert wird und danach noch mal zuerst einen LP-Filter und dann noch je nach Sensor eine kompliziertere Filterstruktur. Diese hängt von der Konfiguration ab und kann dem Datenblatt entnommen werden.
 
 \subsection*{Encoder}
 Die Encoder geben jeweils auf 2 Pins des Atmega 32U4 ein digitales Hi/Low Signal. Eines davon gibt, ob sich die Rotation des kleinen Magnets verändert hat und das andere gibt die Richtung zurück. Dabei werden 12 Ticks pro Umdrehung des kleinen Magnetes detektiert. Dies wird dann auf dem Mikrocontroller mittels Interrupts aufsummiert und dann wird die totale Anzahl Ticks an den Raspberry Pi weitergeleitet.\\
