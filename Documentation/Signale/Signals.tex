@@ -1,11 +1,12 @@
-\documentclass[a4paper]{article}
+\documentclass[a4paper, 12pt]{article}
 
+\usepackage{extsizes}
 \usepackage[utf8]{inputenc}
 \usepackage[ngerman]{babel}
 \usepackage[T1]{fontenc}
 \usepackage{hyperref}
 \usepackage{tikz, pgf}
-\usepackage{rotating}
+\usepackage{pdflscape}
 \usepackage[left=2cm,right=2cm,top=2cm,bottom=2cm]{geometry}
 
 \title{Signale Sigi2.0}
@@ -13,11 +14,74 @@
 \begin{document}
 \maketitle
 
-Die Komponenten des Sigi2.0 tauschen untereinander die Signale aus, wie sie in der Graphik auf der nächsten Seite abgebildet sind. Dabei ist zu beachten, dass der Motor ein Drehmoment zurück gibt und die Sensoren geben die Werte der jeweilig gemessenen Grösse zurück. Diese sind einfach Zahlenwerte, die dann mit der entsprechenden Sensitivität multipliziert den Wert in der entsprechenden physikalischen Grösse zurückgeben. Dabei hängt die Sensitivität von der gewählten Full-Scale ab.
-\begin{sidewaysfigure}
-	\resizebox{\textwidth}{!}{
+Die Komponenten des Sigi2.0 tauschen untereinander die Signale aus, wie sie in der Graphik auf der nächsten Seite abgebildet sind. Dabei ist zu beachten, dass der Motor ein Drehmoment zurück gibt und die Sensoren geben die Werte der jeweilig gemessenen Grösse zurück. Diese sind einfach Zahlenwerte, die dann mit der entsprechenden Sensitivität multipliziert den Wert in der entsprechenden physikalischen Grösse zurückgeben. Dabei hängt die Sensitivität von der gewählten Full-Scale ab. In den folgenden Abschnitten wird noch genauer auf die einzelnen Hardware-Komponenten eingegangen. Für genauere Spezifikationen (nichtlinearität, Offset, Temperaturabhängigkeit etc.) wird auf das jeweilige Datenblatt verwiesen.
+
+\subsection*{Accelerometer}
+In der folgenden Tabelle werden typische Werte\footnote{ohne Garantie vom Hersteller} für die Sensitivität des Accelerometers angegeben.
+Diese Werte gelten für eine Temperatur von $T = 25^\circ C$, die Temperaturabhängigkeit kann dem Datenblatt entnommen werden, und für eine Spannung von $1.8 V$
+\begin{center}
+	\begin{tabular}{c | c}
+	Full-Scale [g] & Sensitivität [mg/LSB]\\\hline
+	$\pm 2$ & 0.061\\
+	$\pm 4$ & 0.122\\
+	$\pm 8$ & 0.244\\
+	$\pm 16$ & 0.488
+\end{tabular}
+\end{center}
+Dies kann man auch wie folgt als Formel schreiben, wenn man als $FS$ jeweils die halbe Full-Scale ($FS = 2$ für eine Full-Scale von $\pm 2$) nimmt:\\
+\[Sens \left[\frac{mg}{LSB}\right] = \frac{FS}{2}*0.061\]
+
+\subsection*{Gyroskop}
+In der folgenden Tabelle werden typische Werte\footnote{ohne Garantie vom Hersteller} für die Sensitivität des Gyroskops angegeben.
+Diese Werte gelten für eine Temperatur von $T = 25^\circ C$, die Temperaturabhängigkeit kann dem Datenblatt entnommen werden, und für eine Spannung von $1.8 V$
+\begin{center}
+	\begin{tabular}{c | c}
+	Full-Scale [dps] & Sensitivität [mdps/LSB]\\\hline
+	$\pm 125$ & 4.375\\
+	$\pm 245$ & 8.75\\
+	$\pm 500$ & 17.5\\
+	$\pm 1000$ & 35\\
+	$\pm 2000$ & 70
+\end{tabular}
+\end{center}
+
+\subsection*{Magnetometer}In der folgenden Tabelle werden typische Werte\footnote{ohne Garantie vom Hersteller} für die Sensitivität des Magnetometers angegeben.
+Diese Werte gelten für eine Temperatur von $T = 25^\circ C$, die Temperaturabhängigkeit kann dem Datenblatt entnommen werden, und für eine Spannung von $2.5 V$
+\begin{center}
+	\begin{tabular}{c | c}
+		Full-Scale [gauss] & Sensitivität [LSB/gauss]\\\hline
+		$\pm 4$ & 6842\\
+		$\pm 8$ & 3421\\
+		$\pm 12$ & 2281\\
+		$\pm 16$ & 1711
+	\end{tabular}
+\end{center}
+Im Sensor LSM6DS33 (Accelerometer/Gyroskop) ist auch ein Filter eingebaut, der sich je nach Konfiguration unterschiedlich verhält. Es hat jeweils nach beiden Sensoren zuerst einen Analogen Anti-aliasing LP-Filter, bevor das Signal Digitalisiert wird und danach noch mal zuerst einen LP-Filter und dann noch je nach Sensor eine kompliziertere Filterstruktur. Diese hängt von der Konfiguration ab und kann dem Datenblatt entnommen werden.
+
+\subsection*{Encoder}
+Die Encoder geben jeweils auf 2 Pins des Atmega 32U4 ein digitales Hi/Low Signal. Eines davon gibt, ob sich die Rotation des kleinen Magnets verändert hat und das andere gibt die Richtung zurück. Dabei werden 12 Ticks pro Umdrehung des kleinen Magnetes detektiert. Dies wird dann auf dem Mikrocontroller mittels Interrupts aufsummiert und dann wird die totale Anzahl Ticks an den Raspberry Pi weitergeleitet.\\
+Die Umdrehungen des Magnets sind dabei direkt an die Umdrehung des Motors gekoppelt. Daher hängt die Anzahl Ticks pro Umdrehung des Rads sowohl vom eingebauten Getriebe im Motor als auch vom zusätzlichen Getriebe, das beim Zusammenbau des Pololu Balboa 32U4 ausgewählt wird, ab.
+
+\subsection*{Buttons}
+Die Buttons sorgen für eine Unterschiedliche Spannung auf den zugehörigen Pins des Atmega 32U4. Diese hat 2 Zustände (Hi/Low), wobei Hi die Standardspannung ist und wenn der Knopf gedrückt wird, wird die Spannung gesenkt. Dies wird vom Programm einfach in einen Booleschen Wert umgewandelt, wobei 1 für einen gedrückten Knopf steht und 0 für den Nicht-gedrückten Knopf.
+
+\subsection*{LEDs}
+Die LEDs werden vom Raspberry Pi durch das Senden eines Booleschen Wertes an den Atmega 32U4 gesetzt. Das Programm, setzt dann jeweils den Richtigen Pin, was die LED dann an-/ausschaltet.\\
+Gewisse LEDs werden vom Arduino auch benutzt um anzuzeigen ob Daten über den USB-Port übertragen werden. Daher kann es schwer sein die LEDs zu steuern, wenn der USB-Port angeschlossen ist.
+
+\subsection*{Batterie}
+Die Batterie ist direkt an den ADC (Analog-Digital-Konverter) des Atmega 32U4 angeschlossen. Dieser wandelt dann die Spannung in einen Digitalen Wert um, der dann in $[mV]$ umgerechnet wird. Die Spannung in $mV$ wird dann an den Raspberry Pi weitergegeben.\\
+Es ist zu beachten, dass falls diese zurückgegebene Spannung unter $5500 mV$ fällt, die eigentliche Batteriespannung signifikant tiefer sein kann.
+
+\subsection*{Buzzer}
+Der Rasperry Pi kann dem Atmega 32U4 auch töne senden, die dieser dann abspielt. Der Atmega 32U4 ermittelt mittels einer Tabelle zuerst die Frequenz, die es abzuspielen gilt. Diese wird dann in die nötige Frequenz der Pulsdauermodulation, mittels der die Information an den Buzzer gesendet wird, umgerechnet und ebenfalls der der Lautstärke entsprechende Tastgrad ermittelt. Dann wird das so ermittelte Signal an den Buzzer gesendet, der dann die Note abspielt.
+
+\begin{landscape}
+	\LARGE
+	\hspace{-2.5cm}
+	\resizebox{!}{\textheight}{
 		\input{SignalDiagram.tex}
 	}
-\end{sidewaysfigure}
+\end{landscape}
 	
 \end{document}
