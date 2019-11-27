@@ -7,6 +7,7 @@
 \usepackage{hyperref}
 \usepackage{tikz, pgf}
 \usepackage{pdflscape}
+\usepackage{booktabs}
 \usepackage[left=2cm,right=2cm,top=2cm,bottom=2cm]{geometry}
 
 \title{Signale Sigi2.0}
@@ -15,6 +16,23 @@
 \maketitle
 
 Die Komponenten des Sigi2.0 tauschen untereinander die Signale aus, wie sie in der Graphik auf der nächsten Seite abgebildet sind. Dabei ist zu beachten, dass der Motor ein Drehmoment zurück gibt und die Sensoren geben die Werte der jeweilig gemessenen Grösse zurück. Diese sind einfach Zahlenwerte, die dann mit der entsprechenden Sensitivität multipliziert den Wert in der entsprechenden physikalischen Grösse zurückgeben. Dabei hängt die Sensitivität von der gewählten Full-Scale ab. In den folgenden Abschnitten wird noch genauer auf die einzelnen Hardware-Komponenten eingegangen. Für genauere Spezifikationen (nichtlinearität, Offset, Temperaturabhängigkeit etc.) wird auf das jeweilige Datenblatt verwiesen.
+
+\subsection*{Einheiten}
+Im hier werden folgende Einheiten verwendet, die weder SI-Einheiten noch davon abgeleitete mit besonderem Namen sind:
+\begin{center}
+	\begin{tabular}{c | c | c}
+		Einheit & Beschreibung & Besonderes\\\toprule
+		LSB &  Least Significant Bit & \begin{minipage}{.6\linewidth}\centering
+			Kleinster Schritt\\
+			entspricht einer Änderung von 1 der Zahl
+		\end{minipage}\\\midrule
+		g & Erdanziehung & $1$ g $ \approx 9.80665 \frac{m}{s^2}$\\\midrule
+		dps & Grad pro Sekunde &\\\midrule
+		gauss & Magnetische Flussdichte & \begin{minipage}{.6\linewidth}\centering
+			$1 $ gauss $ = 10^{-4} T = 10^{-4} \frac{kg}{A\cdot s^2}$\\ Magnetische Flussdichte des Erdmagnetfelds (Mitteleuropa) $\approx 48\mu T$ \\($20 \mu T$ horizontal, $44\mu T$ vertikal)
+		\end{minipage}
+	\end{tabular}
+\end{center}
 
 \subsection*{Inertialmodul}
 \subsubsection*{Accelerometer}
