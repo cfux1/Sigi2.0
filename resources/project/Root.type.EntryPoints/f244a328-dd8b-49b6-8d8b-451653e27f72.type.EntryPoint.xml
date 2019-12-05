@@ -1,0 +1,4 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<Info Type="StartUp" Visible="0" Icon="" File="hardwareInteraction/defineParams.m" Name="defineParams">
+    <Extension Value="cd5b04c3-1f87-423e-8f5d-355c88068cd4" Name="StartUpPrev" />
+</Info>
