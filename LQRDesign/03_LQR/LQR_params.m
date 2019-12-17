@@ -5,5 +5,5 @@
 
 K_lqr = [-70.7107 -83.3587 -91.2872 -13.2266];  % Enter calculated values for K_lqr
 p_ref = 0;                                      % position reference
-theta_ref = ;                                   % equilibrium angle
-max_velocity = ;                                % max velocity for motor input = 1
+theta_ref = 9;                                  % equilibrium angle
+max_velocity = 6000;                            % max velocity for motor input = 1
