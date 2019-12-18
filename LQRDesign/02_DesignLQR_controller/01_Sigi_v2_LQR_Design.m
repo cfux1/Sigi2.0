@@ -17,7 +17,6 @@ switch SetParams
         % experimentell "gemessen" von Raffi
         par.m       = 0.412;               % [kg]      Body part mass
         par.l       = 0.029;               % [m]       Position of COM
-     
 end
         par.r       = 0.04;                     % [m]       Radius of wheel
         par.g       = 9.81;                     % [m/s^2]   Gravity constant  
