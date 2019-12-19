@@ -9,7 +9,7 @@ function    [p,theta,...                            % Sytem outputs
 K_lqr = [K_lqr_1, K_lqr_2, K_lqr_3, K_lqr_4];
 
 % Electric motor - additional parameters
-    tau_lp = 0.06;
+    tau_lp = 0.09;
 
 % Electric motor reference speed
 %     phiw_dot_ref = -K_lqr*[p_dot,theta,theta_dot]' + theta_ref * K_lqr(2);

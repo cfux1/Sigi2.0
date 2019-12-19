@@ -6,7 +6,7 @@ function    [p,theta,...                        % Sytem outputs
             l, r, g)                            % System parameters
 
 % Additional parameters of electric motor model
-	tau_lp = 0.06;
+	tau_lp = 0.09;
 
 % State updates
     d_p         = p_dot;

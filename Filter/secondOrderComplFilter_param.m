@@ -1,7 +1,7 @@
 
 %% Initialize Sampling Time/Frequency
 % Sampling frequency [Hz]
-fs = 100;
+fs = 1000;
 % Sampling Time [s]
 Ts = 1/fs;
 %% Initialize parameters filter
